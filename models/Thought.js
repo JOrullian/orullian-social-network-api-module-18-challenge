@@ -11,6 +11,36 @@ const formatDate = (timestamp) => {
     });
 };
 
+// Reaction Schema as a subdocument schema
+const reactionSchema = new Schema(
+    {
+        reactionId: {
+            type: Schema.Types.ObjectId,
+            default: new ObjectId()
+        },
+        reactionBody: {
+            type: String,
+            required: true,
+            maxLength: 280,
+        },
+        username: {
+            type: String,
+            required: true,
+        },
+        createdAt: {
+            type: Date,
+            default: Date.now,
+            get: formatDate,
+        },
+    },
+    {
+        toJSON: {
+            getters: true,
+        },
+        _id: false,
+    }
+);
+
 // Schema to create Thought model
 const thoughtSchema = new Schema(
     {
@@ -29,14 +59,14 @@ const thoughtSchema = new Schema(
             type: String,
             required: true,
         },
-        reactions: [reactionSchema]
+        reactions: [reactionSchema],
     },
     {
         toJSON: {
             virtuals: true,
             getters: true,
         },
-        id: false,
+        _id: false,
     }
 );
 
