@@ -1,4 +1,5 @@
-const { User, Thought } = require('../models');
+const mongoose = require('mongoose');
+const { User, Thought } = require("../models");
 
 module.exports = {
   // Get all users
@@ -45,27 +46,30 @@ module.exports = {
   // Update a user by userId
   async updateUser(req, res) {
     try {
+      // Cast userId to ObjectId
+      const userId = new mongoose.Types.ObjectId(req.params.userId);
+  
       const user = await User.findOneAndUpdate(
-        { _id: req.params.userId },
+        { _id: userId },
         { $set: req.body },
         { new: true, runValidators: true }
       );
-
+  
       if (!user) {
         return res.status(404).json({ message: "No user found with that ID." });
       }
-
+  
       res.json({ message: "User updated successfully", user });
     } catch (err) {
       console.log(err);
       res.status(500).json(err);
     }
-  },
+  },  
 
   // Delete a user and associated thoughts
   async deleteUser(req, res) {
     try {
-      const user = await User.findOneAndRemove({ _id: req.params.userId });
+      const user = await User.findOneAndDelete({ _id: req.params.userId });
 
       if (!user) {
         return res.status(404).json({ message: "User not found" });
@@ -74,7 +78,9 @@ module.exports = {
       // Delete the user's associated thoughts
       await Thought.deleteMany({ userId: user._id });
 
-      res.json({ message: "User and associated thoughts deleted successfully" });
+      res.json({
+        message: "User and associated thoughts deleted successfully",
+      });
     } catch (err) {
       console.log(err);
       res.status(500).json(err);
@@ -84,9 +90,12 @@ module.exports = {
   // Add a friend by userId
   async addFriend(req, res) {
     try {
+      // Ensure friendId is cast to ObjectId
+      const friendId = new mongoose.Types.ObjectId(req.params.friendId);
+
       const user = await User.findOneAndUpdate(
         { _id: req.params.userId },
-        { $addToSet: { friends: req.params.friendId } },
+        { $addToSet: { friends: friendId } },
         { new: true }
       );
 
@@ -104,9 +113,12 @@ module.exports = {
   // Remove a friend by userId
   async removeFriend(req, res) {
     try {
+      // Ensure friendId is cast to ObjectId
+      const friendId = new mongoose.Types.ObjectId(req.params.friendId);
+
       const user = await User.findOneAndUpdate(
         { _id: req.params.userId },
-        { $pull: { friends: req.params.friendId } },
+        { $pull: { friends: friendId } },
         { new: true }
       );
 

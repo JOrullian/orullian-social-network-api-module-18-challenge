@@ -1,5 +1,5 @@
-const { Schema, model } = require('mongoose');
-const reactionSchema = require('./Reaction');
+const { Schema, model, Types } = require('mongoose'); // Ensure Types is imported
+const { ObjectId } = Types; // Access ObjectId from Types
 
 const formatDate = (timestamp) => {
     return new Date(timestamp).toLocaleDateString('en-US', {
@@ -11,12 +11,12 @@ const formatDate = (timestamp) => {
     });
 };
 
-// Reaction Schema as a subdocument schema
+// Define reactionSchema within Thought.js
 const reactionSchema = new Schema(
     {
         reactionId: {
             type: Schema.Types.ObjectId,
-            default: new ObjectId()
+            default: () => new ObjectId(), // Ensure a new ObjectId is generated for each reaction
         },
         reactionBody: {
             type: String,
@@ -37,7 +37,7 @@ const reactionSchema = new Schema(
         toJSON: {
             getters: true,
         },
-        _id: false,
+        id: false,
     }
 );
 
@@ -59,22 +59,21 @@ const thoughtSchema = new Schema(
             type: String,
             required: true,
         },
-        reactions: [reactionSchema],
+        reactions: [reactionSchema], // Use reactionSchema defined above
     },
     {
         toJSON: {
             virtuals: true,
             getters: true,
         },
-        _id: false,
+        id: false,
     }
 );
 
 thoughtSchema
     .virtual('reactionCount')
     .get(function () {
-        const numberOfReactions = this.reactions.length;
-        return numberOfReactions;
+        return this.reactions.length;
     });
 
 const Thought = model('thought', thoughtSchema);

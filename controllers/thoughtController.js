@@ -1,4 +1,5 @@
-const { Thought, User } = require("../models");
+const mongoose = require('mongoose');
+const { Thought, User } = require("../models")
 
 // Aggregate function to get the total number of thoughts
 const totalCount = async () => {

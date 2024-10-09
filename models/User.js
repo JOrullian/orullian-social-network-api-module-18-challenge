@@ -1,5 +1,5 @@
 const { Schema, model } = require('mongoose');
-const thoughtSchema = require('./Thought');
+const { ObjectId } = require('mongoose').Types;
 
 // Schema to create User model
 const userSchema = new Schema(
