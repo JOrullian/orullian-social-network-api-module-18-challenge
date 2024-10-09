@@ -1,10 +1,8 @@
 const { connect, connection } = require('mongoose');
-
-// MongoDB connection string
-const connectionString = 'mongodb://127.0.0.1:27017/SocialNetworkDB';
+require('dotenv').config();
 
 // Connect to MongoDB
-connect(connectionString, {
+connect(process.env.MONGODB_URI, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 });
