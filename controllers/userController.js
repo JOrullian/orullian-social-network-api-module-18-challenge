@@ -46,7 +46,6 @@ module.exports = {
   // Update a user by userId
   async updateUser(req, res) {
     try {
-      // Cast userId to ObjectId
       const userId = new mongoose.Types.ObjectId(req.params.userId);
   
       const user = await User.findOneAndUpdate(
