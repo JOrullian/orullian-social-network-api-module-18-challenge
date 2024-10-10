@@ -1,5 +1,9 @@
 # Social Network API
 
+[Github Repo](https://github.com/JOrullian/orullian-social-network-api-module-18-challenge)
+
+[Demo Video](https://www.loom.com/share/5cdad8cf9aba4416b968127512182e1b?sid=4b07aa6d-c6fa-42c7-bb96-3b970407c093)
+
 ## Description
 
 This is a back-end application designed to manage the social networking needs of a platform. It allows the platform to store user data, thoughts (posts), reactions (replies to thoughts), and maintain friendships between users. The application uses MongoDB and is managed through the Mongoose ODM (Object Data Modeling) library to handle data storage. While this is a back-end application, it can be paired with front-end interfaces or tested through tools like Insomnia to interact with the API routes.
